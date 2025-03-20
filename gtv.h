@@ -1,6 +1,7 @@
 #ifndef GTV_H
 #define GTV_H
 
+#define GTK_ENABLE_BROKEN
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include <assert.h>

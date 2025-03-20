@@ -1,4 +1,5 @@
 
+.section .note.GNU-stack,"",%progbits
 
 #if defined(i386) && defined(USE_MMX)
 

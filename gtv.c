@@ -850,7 +850,7 @@ static void gtv_set_trackbar( gpointer raw, int value )
 
     assert( raw );
     assert( value >= 0 );
-    if(gtv_trackbar_dragging) return;
+    //if(gtv_trackbar_dragging) return;
 
     mpeg = (SMPEG*) gtk_object_get_data( GTK_OBJECT( raw ), "mpeg" );
     info = (SMPEG_Info*) gtk_object_get_data( GTK_OBJECT( raw ), "info" );
@@ -860,9 +860,10 @@ static void gtv_set_trackbar( gpointer raw, int value )
       seek  = gtk_range_get_adjustment ( GTK_RANGE( scale ) );
       seek->value = 100. * value / info->total_size;
       gtk_range_set_adjustment ( GTK_RANGE( scale ), seek );
-      gtk_range_slider_update ( GTK_RANGE( scale ) );
-      gtk_range_clear_background ( GTK_RANGE( scale ) );
-      gtk_range_draw_background ( GTK_RANGE( scale ) );
+      gtk_adjustment_changed ( seek );
+      //gtk_range_slider_update ( GTK_RANGE( scale ) );
+      //gtk_range_clear_background ( GTK_RANGE( scale ) );
+      //gtk_range_draw_background ( GTK_RANGE( scale ) );
     }
 }
 
@@ -1021,7 +1022,7 @@ static GtkWidget* create_gtv_window( void )
   GtkWidget *menubar1;
   GtkWidget *file;
   GtkWidget *file_menu;
-  GtkAccelGroup *file_menu_accels;
+  //GtkAccelGroup *file_menu_accels;
   GtkWidget *open;
   GtkWidget *close;
   GtkWidget *separator1;
@@ -1030,7 +1031,7 @@ static GtkWidget* create_gtv_window( void )
   GtkWidget *quit;
   GtkWidget *help;
   GtkWidget *help_menu;
-  GtkAccelGroup *help_menu_accels;
+  //GtkAccelGroup *help_menu_accels;
   GtkWidget *about;
   GtkWidget *table1;
   GtkObject *seek;
@@ -1083,7 +1084,7 @@ static GtkWidget* create_gtv_window( void )
   gtk_object_set_data_full (GTK_OBJECT (gtv_window), "file_menu", file_menu,
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (file), file_menu);
-  file_menu_accels = gtk_menu_ensure_uline_accel_group (GTK_MENU (file_menu));
+  //file_menu_accels = gtk_menu_ensure_uline_accel_group (GTK_MENU (file_menu));
 
   open = gtk_menu_item_new_with_label ("Open");
   gtk_widget_ref (open);
@@ -1154,7 +1155,7 @@ static GtkWidget* create_gtv_window( void )
   gtk_object_set_data_full (GTK_OBJECT (gtv_window), "help_menu", help_menu,
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (help), help_menu);
-  help_menu_accels = gtk_menu_ensure_uline_accel_group (GTK_MENU (help_menu));
+  //help_menu_accels = gtk_menu_ensure_uline_accel_group (GTK_MENU (help_menu));
 
   about = gtk_menu_item_new_with_label ("About");
   gtk_widget_ref (about);

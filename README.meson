@@ -1,69 +1,60 @@
 # Building SMPEG with Meson
 
-SMPEG now supports building with the Meson build system, which provides a modern,
-fast, and cross-platform way to build the library.
+SMPEG can now be built using the Meson build system as an alternative to autotools.
 
 ## Requirements
 
-- Meson (>= 0.50.0)
-- Ninja (or another Meson backend)
-- A C/C++ compiler (GCC, Clang, MSVC, etc.)
-- SDL 1.2.0 or newer (with pkg-config support)
-- For GTK player: GTK+ 2.0 libraries
-- For OpenGL player: OpenGL development libraries
+- Meson build system (at least 0.50.0)
+- Ninja
+- SDL 1.2 development files
+- C/C++ compiler
 
-## Quick Start
+## Basic Build Instructions
 
-```bash
-# Configure the build
-meson setup builddir
-
-# Build the library and tools
-meson compile -C builddir
-
-# Install the library and tools
-meson install -C builddir
+```
+meson setup [options] build_dir
+ninja -C build_dir
+ninja -C build_dir install
 ```
 
-## Configuration Options
+## Important Build Options
 
-SMPEG supports several build options that can be enabled or disabled:
+- `-Daudio_only=true`: Build only the audio part of the library (no video support, no players)
+- `-Ddefault_library=static`: Build static libraries instead of shared
+- `-Dmmx=true`: Enable MMX optimizations for IDCT decoding
+- `-Dgtk_player=false`: Disable building the GTK player
+- `-Dopengl_player=false`: Disable building the OpenGL player
+- `-Dthreaded_audio=true`: Enable threaded audio processing
 
-```bash
-meson setup builddir -Dmmx=true             # Enable MMX IDCT decoding (x86/x86_64 only)
-meson setup builddir -Dthreaded_audio=false # Disable threaded audio
-meson setup builddir -Dgtk_player=false     # Skip building the GTK player
+## Audio-Only Static Library Build
+
+If you want to build SMPEG as a static library with only MP3 audio support:
+
+```
+meson setup -Daudio_only=true -Ddefault_library=static build
+ninja -C build
 ```
 
-Available options:
+## Using with lhelper
 
-- `mmx`: Enable MMX IDCT decoding routines [default: false]
-- `ati`: Enable ATI Rage128 hardware acceleration [default: false]
-- `timestamp_sync`: Enable system timestamp sync [default: false]
-- `threaded_system`: Enable system thread [default: false]
-- `threaded_audio`: Enable threaded audio [default: true]
-- `gtk_player`: Build a GTk sample SMPEG player [default: true]
-- `opengl_player`: Build an OpenGL sample SMPEG player [default: true]
+If using the lhelper environment management tool, include SDL dependencies:
 
-You can also use standard Meson options like `buildtype`:
-
-```bash
-meson setup builddir -Dbuildtype=debug    # Enable debugging
-meson setup builddir -Dbuildtype=release  # Optimize for release
+```
+lhelper create build  # Uses build.lhelper
+source $(lhelper env-source build)
+meson setup [options] build_dir
 ```
 
-## Cross-compilation
+## Testing the Build
 
-For cross-compilation, use Meson's cross-file capabilities:
+After building, you can run the player applications:
 
-```bash
-meson setup builddir --cross-file=your-cross-file.txt
+```
+./build/plaympeg <file.mpg>
 ```
 
-## Using SMPEG in Other Projects
+Or install to a temporary location for testing:
 
-If SMPEG is installed, other Meson projects can use it as a dependency:
-
-```meson
-smpeg_dep = dependency('smpeg')
+```
+DESTDIR=/tmp/smpeg_test ninja -C build install
 ```
