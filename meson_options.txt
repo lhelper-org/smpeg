@@ -1,0 +1,8 @@
+option('mmx', type: 'boolean', value: false, description: 'Enable MMX IDCT decoding routines')
+option('ati', type: 'boolean', value: false, description: 'Enable ATI Rage128 hardware acceleration')
+option('timestamp_sync', type: 'boolean', value: false, description: 'Enable system timestamp sync')
+option('threaded_system', type: 'boolean', value: false, description: 'Enable system thread')
+option('threaded_audio', type: 'boolean', value: true, description: 'Enable threaded audio')
+option('gtk_player', type: 'boolean', value: true, description: 'Build a GTk sample SMPEG player')
+option('opengl_player', type: 'boolean', value: true, description: 'Build an OpenGL sample SMPEG player')
+option('audio_only', type: 'boolean', value: false, description: 'Build only the audio part of the library')

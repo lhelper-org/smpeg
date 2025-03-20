@@ -1,0 +1,69 @@
+# Building SMPEG with Meson
+
+SMPEG now supports building with the Meson build system, which provides a modern,
+fast, and cross-platform way to build the library.
+
+## Requirements
+
+- Meson (>= 0.50.0)
+- Ninja (or another Meson backend)
+- A C/C++ compiler (GCC, Clang, MSVC, etc.)
+- SDL 1.2.0 or newer (with pkg-config support)
+- For GTK player: GTK+ 2.0 libraries
+- For OpenGL player: OpenGL development libraries
+
+## Quick Start
+
+```bash
+# Configure the build
+meson setup builddir
+
+# Build the library and tools
+meson compile -C builddir
+
+# Install the library and tools
+meson install -C builddir
+```
+
+## Configuration Options
+
+SMPEG supports several build options that can be enabled or disabled:
+
+```bash
+meson setup builddir -Dmmx=true             # Enable MMX IDCT decoding (x86/x86_64 only)
+meson setup builddir -Dthreaded_audio=false # Disable threaded audio
+meson setup builddir -Dgtk_player=false     # Skip building the GTK player
+```
+
+Available options:
+
+- `mmx`: Enable MMX IDCT decoding routines [default: false]
+- `ati`: Enable ATI Rage128 hardware acceleration [default: false]
+- `timestamp_sync`: Enable system timestamp sync [default: false]
+- `threaded_system`: Enable system thread [default: false]
+- `threaded_audio`: Enable threaded audio [default: true]
+- `gtk_player`: Build a GTk sample SMPEG player [default: true]
+- `opengl_player`: Build an OpenGL sample SMPEG player [default: true]
+
+You can also use standard Meson options like `buildtype`:
+
+```bash
+meson setup builddir -Dbuildtype=debug    # Enable debugging
+meson setup builddir -Dbuildtype=release  # Optimize for release
+```
+
+## Cross-compilation
+
+For cross-compilation, use Meson's cross-file capabilities:
+
+```bash
+meson setup builddir --cross-file=your-cross-file.txt
+```
+
+## Using SMPEG in Other Projects
+
+If SMPEG is installed, other Meson projects can use it as a dependency:
+
+```meson
+smpeg_dep = dependency('smpeg')
+```
